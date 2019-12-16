@@ -134,13 +134,17 @@ class InsCore(object):
         delta_q[0, 2] = delta_q[3, 1] = -self.omega_n2b_4b[_Y]
         delta_q[1, 0] = delta_q[3, 2] = -self.omega_n2b_4b[_Z]
 
-        return 0.5 * delta_q @ self.q_b_n.toArray()
+        return delta_q
 
     def update(self, accel, gyro, deltaT):
         # attitude
         self.update_omega_i2n_4n()
         self.omega_n2b_4b = gyro - np.linalg.inv(self.C_b_n) @ self.omega_i2n_4n
+
+        # update quaternion
         delta_n_b = self.deltaq_n_b()
+        delta_n_b *= 0.5
+        delta_n_b = delta_n_b @ self.q_b_n.toArray()
         self.q_b_n += delta_n_b * deltaT
         self.q_b_n.regulerize()
 
