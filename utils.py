@@ -8,28 +8,6 @@ def scalar2vec(v1, v2, v3):
     result[2] = v3
     return result
 
-def quat2cbnMat(quaternion):
-    q0 = quaternion.getX()
-    q1 = quaternion.getY()
-    q2 = quaternion.getZ()
-    w = quaternion.getW()
-
-    mat = np.zeros((3, 3))
-
-    mat[0, 1] = q0 * q1 - q2 * w
-    mat[0, 2] = q0 * q2 + q1 * w
-    mat[1, 0] = q0 * q1 + q2 * w
-    mat[1, 2] = q1 * q2 - q0 * w
-    mat[2, 0] = q0 * q2 - q1 * w
-    mat[2, 1] = q1 * q2 + q0 * w
-    mat *= 2.0
-
-    mat[0, 0] = q0 ** 2.0 - q1 ** 2.0 - q2 ** 2.0 + w ** 2.0
-    mat[1, 1] = q1 ** 2.0 - q0 ** 2.0 - q2 ** 2.0 + w ** 2.0
-    mat[2, 2] = q2 ** 2.0 - q0 ** 2.0 - q1 ** 2.0 + w ** 2.0
-
-    return mat
-
 
 def quat2cenMat(position):
     mat = np.zeros((3, 3))

@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Quaternion(object):
-    def __init__(self, q=np.zeros((4,1))):
+    def __init__(self, q=np.zeros((4, 1))):
         self.__value = q
 
     def getX(self):
@@ -55,3 +55,25 @@ class Quaternion(object):
 
     def conj(self):
         return Quaternion(np.array([-self.getX(), -self.getY(), -self.getZ(), self.getW()]))
+
+    def toMatrix(self):
+        q0 = self.getX()
+        q1 = self.getY()
+        q2 = self.getZ()
+        w = self.getW()
+
+        mat = np.zeros((3, 3))
+        mat[0, 1] = q0 * q1 - q2 * w
+        mat[0, 2] = q0 * q2 + q1 * w
+        mat[1, 0] = q0 * q1 + q2 * w
+        mat[1, 2] = q1 * q2 - q0 * w
+        mat[2, 0] = q0 * q2 - q1 * w
+        mat[2, 1] = q1 * q2 + q0 * w
+        mat *= 2.0
+
+        mat[0, 0] = q0 ** 2.0 - q1 ** 2.0 - q2 ** 2.0 + w ** 2.0
+        mat[1, 1] = q1 ** 2.0 - q0 ** 2.0 - q2 ** 2.0 + w ** 2.0
+        mat[2, 2] = q2 ** 2.0 - q0 ** 2.0 - q1 ** 2.0 + w ** 2.0
+
+        return mat
+

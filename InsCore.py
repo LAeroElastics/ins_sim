@@ -52,8 +52,7 @@ class InsCore(object):
 
     def initAttitude(self, quaternion):
         self.q_b_n = quaternion
-        print(self.q_b_n.getW())
-        self.C_b_n = utils.quat2cbnMat(self.q_b_n)
+        self.C_b_n = self.q_b_n.toMatrix()
         self.C_e_n = utils.quat2cenMat(self.positionVector())
 
     def initVelocity(self, v_N, v_E, v_D):
@@ -149,7 +148,7 @@ class InsCore(object):
         self.q_b_n.regulerize()
 
         #
-        self.C_b_n = utils.quat2cbnMat(self.q_b_n)
+        self.C_b_n = self.q_b_n.toMatrix()
 
         # Update velocity
         self.update_omega_e2n_4n()
